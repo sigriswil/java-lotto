@@ -15,6 +15,9 @@ public class PurchaseInfo {
 
         this.manualTicketCount = manualTickets.size();
         this.autoTicketCount = purchasePrice.calculatePurchaseCount() - this.manualTicketCount;
+
+        validateAutoTicketCount();
+
         this.manualTickets = Collections.unmodifiableList(manualTickets);
     }
 
@@ -31,6 +34,12 @@ public class PurchaseInfo {
     private void validateManualTickets(List<LottoTicket> manualTickets) {
         if (manualTickets == null) {
             throw new IllegalArgumentException("수동 로또번호 정보가 존재하지 않습니다.");
+        }
+    }
+
+    private void validateAutoTicketCount() {
+        if (this.autoTicketCount < 0) {
+            throw new IllegalArgumentException("구매 수량보다 수동 수량이 많습니다.");
         }
     }
 
