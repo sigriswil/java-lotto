@@ -7,15 +7,15 @@ import java.util.Objects;
 
 public class LottoTickets {
 
-    private final List<LottoTicket> lottoNumbers;
+    private final List<LottoTicket> lottoTickets;
 
     private LottoTickets() {
-        this.lottoNumbers = new ArrayList<>();
+        this.lottoTickets = new ArrayList<>();
     }
 
     private LottoTickets(List<LottoTicket> lottoNumbers) {
-        validateLottoNumbers(lottoNumbers);
-        this.lottoNumbers = lottoNumbers;
+        validateLottoTickets(lottoNumbers);
+        this.lottoTickets = lottoNumbers;
     }
 
     public static LottoTickets newInstance() {
@@ -26,7 +26,7 @@ public class LottoTickets {
         return new LottoTickets(lottoNumbers);
     }
 
-    private void validateLottoNumbers(List<LottoTicket> lottoNumbers) {
+    private void validateLottoTickets(List<LottoTicket> lottoNumbers) {
         if (lottoNumbers == null) {
             throw new IllegalArgumentException("로또 번호 묶음이 존재하지 않습니다.");
         }
@@ -37,8 +37,8 @@ public class LottoTickets {
     }
 
     public LottoTickets addAll(List<LottoTicket> lottoNumbers) {
-        validateLottoNumbers(lottoNumbers);
-        this.lottoNumbers.addAll(lottoNumbers);
+        validateLottoTickets(lottoNumbers);
+        this.lottoTickets.addAll(lottoNumbers);
 
         return clone();
     }
@@ -48,15 +48,15 @@ public class LottoTickets {
     }
 
     public List<LottoTicket> toList() {
-        return Collections.unmodifiableList(this.lottoNumbers);
+        return Collections.unmodifiableList(this.lottoTickets);
     }
 
     public int getCount() {
-        return this.lottoNumbers.size();
+        return this.lottoTickets.size();
     }
 
     public int getCountByCreationType(CreationType creationType) {
-        return (int) this.lottoNumbers.stream()
+        return (int) this.lottoTickets.stream()
                 .filter(lottoNumber -> lottoNumber.equalsCreationType(creationType))
                 .count();
     }
@@ -64,9 +64,9 @@ public class LottoTickets {
     public LottoMatchResult calculateMatchCount(LottoTicket lastWinLottoTicket, LottoNumber bonusNumber) {
         LottoMatchResult lottoMatchResult = LottoMatchResult.newInstance();
 
-        this.lottoNumbers.forEach(lottoNumbers -> {
-            LottoMatch lottoMatch = LottoMatch.findByCount(lottoNumbers.getMatchCount(lastWinLottoTicket),
-                    lottoNumbers.isMatchNumber(bonusNumber));
+        this.lottoTickets.forEach(lottoTicket -> {
+            LottoMatch lottoMatch = LottoMatch.findByCount(lottoTicket.getMatchCount(lastWinLottoTicket),
+                    lottoTicket.isMatchNumber(bonusNumber));
             lottoMatchResult.increaseMatchCount(lottoMatch);
         });
 
